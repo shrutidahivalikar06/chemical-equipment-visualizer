@@ -1,0 +1,24 @@
+.container {
+  text-align: center;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+}
+
+button {
+  margin-left: 10px;
+  padding: 6px 12px;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 15px;
+}
+
+.card {
+  background: #f2f2f2;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+}
