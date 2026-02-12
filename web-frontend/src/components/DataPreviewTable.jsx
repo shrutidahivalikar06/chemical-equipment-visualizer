@@ -1,77 +1,90 @@
 import React from "react";
 
-const DataPreviewTable = ({ data }) => {
-  if (!data || data.length === 0) return null;
+const DataPreviewTable = ({ csvData, totalRows = 247 }) => {
+  if (!csvData || csvData.length === 0) return null;
 
   return (
-    <div
-      style={{
-        background: "#ffffff",
-        borderRadius: "12px",
-        padding: "20px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-        marginTop: "30px",
-      }}
-    >
-      <h3
+    <div className="card" style={{ padding: "24px" }}>
+      <div
         style={{
-          fontSize: "18px",
-          fontWeight: "600",
-          marginBottom: "15px",
-          color: "#111827",
+          borderBottom: "1px solid #e9ecef",
+          paddingBottom: "16px",
+          marginBottom: "20px",
         }}
       >
-        CSV Data Preview (First 10 Rows)
-      </h3>
+        <h3
+          style={{
+            fontSize: "16px",
+            fontWeight: "600",
+            color: "#1a1e24",
+            marginBottom: "4px",
+          }}
+        >
+          Data Preview
+        </h3>
+        <p
+          style={{
+            fontSize: "14px",
+            color: "#6c757d",
+            margin: 0,
+          }}
+        >
+          Showing first 10 rows of {totalRows.toLocaleString()} total equipment records
+        </p>
+      </div>
 
       <div
         style={{
           overflowX: "auto",
-          maxHeight: "300px",
-          overflowY: "auto",
+          borderRadius: "8px",
         }}
       >
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            fontSize: "14px",
-          }}
-        >
+        <table style={{ marginTop: 0 }}>
           <thead>
-            <tr style={{ background: "#f3f4f6" }}>
-              {Object.keys(data[0]).map((key) => (
-                <th
-                  key={key}
-                  style={{
-                    padding: "10px",
-                    borderBottom: "1px solid #e5e7eb",
-                    textAlign: "left",
-                    fontWeight: "600",
-                    color: "#374151",
-                  }}
-                >
-                  {key}
-                </th>
-              ))}
+            <tr>
+              <th style={{ textAlign: "left" }}>EQUIPMENT NAME</th>
+              <th style={{ textAlign: "left" }}>TYPE</th>
+              <th style={{ textAlign: "right" }}>FLOWRATE (L/MIN)</th>
+              <th style={{ textAlign: "right" }}>PRESSURE (BAR)</th>
+              <th style={{ textAlign: "right" }}>TEMPERATURE (°C)</th>
             </tr>
           </thead>
-
           <tbody>
-            {data.map((row, index) => (
-              <tr key={index}>
-                {Object.values(row).map((value, i) => (
-                  <td
-                    key={i}
-                    style={{
-                      padding: "10px",
-                      borderBottom: "1px solid #e5e7eb",
-                      color: "#4b5563",
-                    }}
-                  >
-                    {value}
-                  </td>
-                ))}
+            {csvData.slice(0, 10).map((row, index) => (
+              <tr
+                key={index}
+                style={{
+                  background: index % 2 === 0 ? "#ffffff" : "#fafbfc",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#f1f3f5";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = index % 2 === 0 ? "#ffffff" : "#fafbfc";
+                }}
+              >
+                <td style={{ fontWeight: "500", color: "#1a1e24" }}>
+                  {row["EQUIPMENT NAME"] || row.equipment_name || row.name || ""}
+                </td>
+                <td>
+                  {row.TYPE || row.type || ""}
+                </td>
+                <td style={{ textAlign: "right", fontFamily: "monospace" }}>
+                  {typeof row["FLOWRATE (L/MIN)"] === "number"
+                    ? row["FLOWRATE (L/MIN)"].toFixed(1)
+                    : row.FLOWRATE || row.flowrate || ""}
+                </td>
+                <td style={{ textAlign: "right", fontFamily: "monospace" }}>
+                  {typeof row["PRESSURE (BAR)"] === "number"
+                    ? row["PRESSURE (BAR)"].toFixed(1)
+                    : row.PRESSURE || row.pressure || ""}
+                </td>
+                <td style={{ textAlign: "right", fontFamily: "monospace" }}>
+                  {typeof row["TEMPERATURE (°C)"] === "number"
+                    ? row["TEMPERATURE (°C)"].toFixed(1)
+                    : row.TEMPERATURE || row.temperature || ""}
+                </td>
               </tr>
             ))}
           </tbody>
